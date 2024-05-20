@@ -20,6 +20,13 @@ namespace YoungSlangBot
             _query = null;
         }
 
+        public HttpLinker(string query)
+        {
+            _apiKey = new FileReader(new FilePathEditor("APIKey.txt").GetModifiedPath()).GetContent();
+            _searchEngineId = new FileReader(new FilePathEditor("SearhEngineId.txt").GetModifiedPath()).GetContent();
+            _query = query;
+        }
+
         public void GetQuery(string query)
         {
             _query = query;
