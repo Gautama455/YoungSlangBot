@@ -1,11 +1,6 @@
-﻿using Telegram.Bot;
-using System.Net;
-using Newtonsoft.Json;
-using Telegram.Bot.Types;
-using System.Diagnostics;
-using System.Net.Http.Json;
-using System.Web;
-using System.Text.Json.Nodes;
+﻿using System.Web;
+using HtmlAgilityPack;
+
 
 namespace YoungSlangBot
 {
@@ -15,17 +10,13 @@ namespace YoungSlangBot
         {
             //TelegramBotClient botClient = new TelegramBotClient(new FileReader(new FilePathEditor("BotToken.txt").GetModifiedPath()).GetContent());
             //HttpLinker httpLinker = new HttpLinker("запрос");
-            //Console.WriteLine(httpLinker.GetStringResponse());
+            //Console.WriteLine(httpLinker.GetStringGoogleResponse());
 
-            string url = $"https://ru.wiktionary.org/w/api.php?action=opensearch&search={HttpUtility.UrlEncode("запрос")}&format=json";
-            //string url = "https://ru.wiktionary.org/w/api.php";
-
-            HttpClient client = new HttpClient();
-            //HttpResponseMessage response = client.GetAsync(url + "&" + action + "&" + page + "&" + format).Result;
-            HttpResponseMessage response = client.GetAsync(url).Result;
-            var result = response.Content.ReadAsStringAsync().Result;
-            var deserializedObject = JsonConvert.DeserializeObject<List<List<string>>>(result);
-            Console.WriteLine(deserializedObject.ElementAt(2).ElementAt(0));
+            HttpLinker httpLinker = new HttpLinker("кринж");
+            string responseUrl = StringEditor.ParseResponseUrl(httpLinker.GetStringWikiResponse());
+            httpLinker.SetQuery(responseUrl);
+            string result = httpLinker.GetData(responseUrl);
+            Console.WriteLine(result);
 
         }
     }

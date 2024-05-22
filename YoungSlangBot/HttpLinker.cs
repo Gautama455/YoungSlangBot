@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace YoungSlangBot
 {
@@ -27,20 +29,47 @@ namespace YoungSlangBot
             _query = query;
         }
 
-        public void GetQuery(string query)
+        public void SetQuery(string query)
         {
             _query = query;
         }
 
-        public string GetStringResponse()
+        public string GetStringGoogleResponse()
         {
             using (HttpClient client = new HttpClient())
             {
                 HttpResponseMessage response = client.GetAsync($"https://www.googleapis.com/customsearch/v1?key={_apiKey}&cx={_searchEngineId}&q={_query}").Result;
 
                 if (response.IsSuccessStatusCode)
-                {
                      return response.Content.ReadAsStringAsync().Result;
+                else
+                    throw new HttpRequestException($"Не удалось установить соединение. Status code: {response.StatusCode}");
+            }
+        }
+
+        public string GetStringWikiResponse()
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                string url = $"https://ru.wiktionary.org/w/api.php?action=opensearch&search={HttpUtility.UrlEncode($"{_query}")}&limit=1&prop=links&format=json";
+                HttpResponseMessage response = client.GetAsync(url).Result;
+
+                if (response.IsSuccessStatusCode)
+                    return response.Content.ReadAsStringAsync().Result;
+                else
+                    throw new HttpRequestException($"Не удалось установить соединение. Status code: {response.StatusCode}");
+            }
+        }
+
+        public string GetData(string url)
+        {
+            using (HttpClient client = new HttpClient())
+            {
+                HttpResponseMessage response = client.GetAsync(url).Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return response.Content.ReadAsStringAsync().Result;
                 }
                 else
                 {
