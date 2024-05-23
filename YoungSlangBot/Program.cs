@@ -1,5 +1,4 @@
-﻿using System.Web;
-using HtmlAgilityPack;
+﻿using HtmlAgilityPack;
 
 
 namespace YoungSlangBot
@@ -14,10 +13,10 @@ namespace YoungSlangBot
 
             HttpLinker httpLinker = new HttpLinker("кринж");
             string responseUrl = StringEditor.ParseResponseUrl(httpLinker.GetStringWikiResponse());
-            httpLinker.SetQuery(responseUrl);
             string result = httpLinker.GetData(responseUrl);
-            Console.WriteLine(result);
+            HtmlDocument doc = new HtmlWeb().Load(responseUrl);
 
+            Console.WriteLine(doc.DocumentNode.SelectSingleNode("//span[@class='mw-headline' and @id='Значение']"));
         }
     }
 }
