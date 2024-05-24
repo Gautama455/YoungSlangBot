@@ -11,12 +11,18 @@ namespace YoungSlangBot
             //HttpLinker httpLinker = new HttpLinker("запрос");
             //Console.WriteLine(httpLinker.GetStringGoogleResponse());
 
-            HttpLinker httpLinker = new HttpLinker("кринж");
+            HttpLinker httpLinker = new HttpLinker("чилить");
             string responseUrl = StringEditor.ParseResponseUrl(httpLinker.GetStringWikiResponse());
-            string result = httpLinker.GetData(responseUrl);
-            HtmlDocument doc = new HtmlWeb().Load(responseUrl);
+            HtmlParser htmlParser = new HtmlParser(responseUrl);
 
-            Console.WriteLine(doc.DocumentNode.SelectSingleNode("//span[@class='mw-headline' and @id='Значение']"));
+            List<HtmlNode> htmlNodes = htmlParser.getWikiResult();
+
+            foreach (HtmlNode node in htmlNodes)
+            {
+                Console.WriteLine(node.InnerText);
+            }
+
+
         }
     }
 }
