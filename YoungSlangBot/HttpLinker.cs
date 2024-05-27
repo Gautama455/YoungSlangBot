@@ -13,7 +13,7 @@ namespace YoungSlangBot
     {
         private string _apiKey;
         private string _searchEngineId;
-        private string? _query;
+        private string _query;
 
         public HttpLinker()
         {
@@ -33,6 +33,8 @@ namespace YoungSlangBot
         {
             _query = query;
         }
+
+        public string Query() => _query;
 
         public string GetStringGoogleResponse()
         {
