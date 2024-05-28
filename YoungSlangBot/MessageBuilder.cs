@@ -1,13 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using HtmlAgilityPack;
 
 namespace YoungSlangBot
 {
     internal class MessageBuilder
     {
+        private List<HtmlNode> _htmlNodes;
+
+        public MessageBuilder(List<HtmlNode> htmlNodes)
+        {
+            _htmlNodes = htmlNodes;
+        }
 
     }
 }
