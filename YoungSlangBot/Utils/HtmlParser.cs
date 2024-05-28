@@ -31,7 +31,7 @@ namespace YoungSlangBot
             List<HtmlNode> nodes = new List<HtmlNode>();
             foreach (HtmlNode htmlNode in htmlNodes)
             {
-                if (htmlNode.OriginalName == "a" || htmlNode.OriginalName == "#text")
+                if ((htmlNode.OriginalName == "a" && htmlNode.FirstChild.OriginalName != "span") || htmlNode.OriginalName == "#text")
                 {
                     nodes.Add(htmlNode);
                 }
