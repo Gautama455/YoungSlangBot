@@ -1,11 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
+﻿using System.Web;
 
 namespace YoungSlangBot
 {
@@ -43,7 +36,7 @@ namespace YoungSlangBot
                 HttpResponseMessage response = client.GetAsync($"https://www.googleapis.com/customsearch/v1?key={_apiKey}&cx={_searchEngineId}&q={_query}").Result;
 
                 if (response.IsSuccessStatusCode)
-                     return response.Content.ReadAsStringAsync().Result;
+                    return response.Content.ReadAsStringAsync().Result;
                 else
                     throw new HttpRequestException($"Не удалось установить соединение. Status code: {response.StatusCode}");
             }
