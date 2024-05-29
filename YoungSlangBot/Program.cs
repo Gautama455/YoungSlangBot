@@ -9,15 +9,27 @@ namespace YoungSlangBot
 {
     internal class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            TelegramBotClient botClient = new TelegramBotClient(new FileReader(new FilePathEditor("BotToken.txt").GetModifiedPath()).GetContent());
-            //Console.WriteLine(new MessageBuilder(new HttpLinker(query)).BuildMessage());
+            string botToken = new FileReader(new FilePathEditor("BotToken.txt").GetModifiedPath()).GetContent();
+            TelegramBotClient botClient = new TelegramBotClient(botToken);
+            try
+            {
+                var cancellationTokenSource = new CancellationTokenSource();
 
-            botClient.StartReceiving(Update, Error);
-            Console.ReadLine();
+                var receiverOptions = new ReceiverOptions
+                {
+                    AllowedUpdates = Array.Empty<UpdateType>()
+                };
 
+                Console.ReadLine();
+            }
+            catch (Exception exc)
+            {
+                Console.WriteLine(exc);
+            }
         }
+
 
         async static Task Update(ITelegramBotClient botClient, Update update, CancellationToken token)
         {
@@ -42,8 +54,13 @@ namespace YoungSlangBot
                         }
                         else
                         {
+                            // Предполагается, что HttpLinker принимает строку в формате URL.
+                            string baseUrl = "https://example.com/translate?text=";
                             string parametr = messageParts[1];
-                            string answerMessage = new MessageBuilder(new HttpLinker(parametr)).BuildMessage();
+                            string fullUrl = baseUrl + Uri.EscapeDataString(parametr);
+
+                            // Использование HttpLinker с правильным URL
+                            string answerMessage = new MessageBuilder(new HttpLinker(fullUrl)).BuildMessage();
                             await botClient.SendTextMessageAsync(message.Chat.Id, answerMessage);
                             return;
                         }
@@ -53,12 +70,19 @@ namespace YoungSlangBot
             else
             {
                 return;
-            }            
+            }
         }
 
         async static Task Error(ITelegramBotClient client, Exception exception, CancellationToken token)
         {
-            throw new NotImplementedException();
+            // Логирование ошибки в консоль
+            Console.WriteLine($"Ошибка: {exception.Message}");
+
+            // Также можно логировать стек вызовов для более подробного анализа
+            Console.WriteLine(exception.StackTrace);
+
+            // Реализуйте дополнительную обработку ошибок при необходимости
+            await Task.CompletedTask;
         }
     }
 }
