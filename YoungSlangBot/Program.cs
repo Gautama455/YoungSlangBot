@@ -11,24 +11,19 @@ namespace YoungSlangBot
     {
         static async Task Main(string[] args)
         {
-            string botToken = new FileReader(new FilePathEditor("BotToken.txt").GetModifiedPath()).GetContent();
-            TelegramBotClient botClient = new TelegramBotClient(botToken);
-            try
-            {
-                var cancellationTokenSource = new CancellationTokenSource();
+            TelegramBotClient botClient = new TelegramBotClient(new FileReader(new FilePathEditor("BotToken.txt").GetModifiedPath()).GetContent());
 
-                var receiverOptions = new ReceiverOptions
+            ReceiverOptions receiverOptions = new ReceiverOptions // Также присваем значение настройкам бота
+            {
+                AllowedUpdates = new[]
                 {
-                    AllowedUpdates = Array.Empty<UpdateType>()
-                };
+                    UpdateType.Message,
+                },
+                ThrowPendingUpdates = true,
+            };
 
-                Console.ReadLine();
-            }
-            catch (Exception exc)
-            {
-                Console.WriteLine(exc);
-            }
-        }
+            botClient.StartReceiving(Update, Error, receiverOptions);
+            Console.ReadLine();
 
 
         async static Task Update(ITelegramBotClient botClient, Update update, CancellationToken token)
@@ -44,7 +39,7 @@ namespace YoungSlangBot
                         await botClient.SendTextMessageAsync(message.Chat.Id, "Здоровей видали");
                         return;
                     }
-                    if (message.Text.Contains("/переведи"))
+                    if (message.Text.Contains("/perevedi"))
                     {
                         string[] messageParts = message.Text.Split(" ");
                         if (messageParts.Length != 2)
