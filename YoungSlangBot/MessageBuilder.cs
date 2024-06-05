@@ -10,7 +10,7 @@ namespace YoungSlangBot
 
         public MessageBuilder(HttpLinker httpLinker)
         {
-            
+
             _httpLinker = httpLinker;
             _messageInHtmlNodes = BuildListNodes();
             _messageArray = GetTextMessageArray();
@@ -19,8 +19,17 @@ namespace YoungSlangBot
         private List<HtmlNode> BuildListNodes()
         {
             string responseUrl = StringEditor.ParseResponseUrl(_httpLinker.GetStringWikiResponse());
-            HtmlParser htmlParser = new HtmlParser(responseUrl);
-            return htmlParser.getWikiResult();
+
+            try
+            {
+                HtmlParser htmlParser = new HtmlParser(responseUrl);
+                return htmlParser.getWikiResult();
+            }
+            catch (ArgumentException exc)
+            {
+                HtmlNode newNode = HtmlNode.CreateNode($"<p>{exc.Message}</p>");
+                return new List<HtmlNode> { newNode };
+            }
         }
 
         public string[] GetTextMessageArray() => _messageArray = ConvertToStringsArray(FilterMessage(_messageInHtmlNodes));
@@ -68,7 +77,7 @@ namespace YoungSlangBot
                     message = message + str + ", ";
             }
 
-            return AddCapitalLetter(_httpLinker.Query()) + " - " + message;
+            return AddCapitalLetter(_httpLinker.Query) + " - " + message;
         }
     }
 }

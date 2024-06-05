@@ -65,13 +65,8 @@ namespace YoungSlangBot
 
             async static Task Error(ITelegramBotClient client, Exception exception, CancellationToken token)
             {
-                // Логирование ошибки в консоль
                 Console.WriteLine($"Ошибка: {exception.Message}");
-
-                // Также можно логировать стек вызовов для более подробного анализа
                 Console.WriteLine(exception.StackTrace);
-
-                // Реализуйте дополнительную обработку ошибок при необходимости
                 await Task.CompletedTask;
             }
         }

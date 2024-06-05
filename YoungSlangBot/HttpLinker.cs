@@ -27,7 +27,7 @@ namespace YoungSlangBot
             _query = query;
         }
 
-        public string Query() => _query;
+        public string Query => _query;
 
         //public string GetStringGoogleResponse()
         //{
