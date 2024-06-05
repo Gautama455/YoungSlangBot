@@ -9,7 +9,7 @@ namespace YoungSlangBot
 
         public HtmlParser(string url)
         {
-            if(url != "")
+            if (url != "")
             {
                 _htmlDocument = new HtmlWeb().Load(url);
             }
@@ -19,8 +19,8 @@ namespace YoungSlangBot
             }
         }
 
-        public HtmlDocument GetHtmlDocument() => _htmlDocument;
-        public HtmlNode? GetCurrentNode() => _currentNode;
+        public HtmlDocument GetHtmlDocument => _htmlDocument;
+        public HtmlNode? GetCurrentNode => _currentNode;
 
         private void SetNode()
         {
