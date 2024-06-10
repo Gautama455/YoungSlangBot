@@ -37,7 +37,7 @@ namespace YoungSlangBot
                             await botClient.SendTextMessageAsync(message.Chat.Id, "Здоровей видали");
                             return;
                         }
-                        if (message.Text.Contains("/perevedi"))
+                        if (message.Text.Contains("/slang"))
                         {
                             string[] messageParts = message.Text.Split(" ");
                             if (messageParts.Length != 2)
