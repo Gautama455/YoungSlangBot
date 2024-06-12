@@ -7,10 +7,20 @@ namespace YoungSlangBot
         private HtmlDocument _htmlDocument;
         private HtmlNode? _currentNode = null;
 
-        public HtmlParser(string url) => _htmlDocument = new HtmlWeb().Load(url);
+        public HtmlParser(string url)
+        {
+            if (url != "")
+            {
+                _htmlDocument = new HtmlWeb().Load(url);
+            }
+            else
+            {
+                throw new ArgumentException("В базе нет результата на данный запрос");
+            }
+        }
 
-        public HtmlDocument GetHtmlDocument() => _htmlDocument;
-        public HtmlNode? GetCurrentNode() => _currentNode;
+        public HtmlDocument GetHtmlDocument => _htmlDocument;
+        public HtmlNode? GetCurrentNode => _currentNode;
 
         private void SetNode()
         {

@@ -1,6 +1,4 @@
-﻿using System.Net.NetworkInformation;
-using Telegram.Bot;
-using Telegram.Bot.Exceptions;
+﻿using Telegram.Bot;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
@@ -39,7 +37,7 @@ namespace YoungSlangBot
                             await botClient.SendTextMessageAsync(message.Chat.Id, "Здоровей видали");
                             return;
                         }
-                        if (message.Text.Contains("/perevedi"))
+                        if (message.Text.Contains("/slang"))
                         {
                             string[] messageParts = message.Text.Split(" ");
                             if (messageParts.Length != 2)
